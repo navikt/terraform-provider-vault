@@ -84,9 +84,11 @@ func Provider() terraform.ResourceProvider {
 		ConfigureFunc: providerConfigure,
 
 		DataSourcesMap: map[string]*schema.Resource{
-			"vault_approle_auth_backend_role_id": approleAuthBackendRoleIDDataSource(),
-			"vault_aws_access_credentials":       awsAccessCredentialsDataSource(),
-			"vault_generic_secret":               genericSecretDataSource(),
+			"vault_approle_auth_backend_role_id":   approleAuthBackendRoleIDDataSource(),
+			"vault_kubernetes_auth_backend_config": kubernetesAuthBackendConfigDataSource(),
+			"vault_kubernetes_auth_backend_role":   kubernetesAuthBackendRoleDataSource(),
+			"vault_aws_access_credentials":         awsAccessCredentialsDataSource(),
+			"vault_generic_secret":                 genericSecretDataSource(),
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
@@ -106,6 +108,8 @@ func Provider() terraform.ResourceProvider {
 			"vault_database_secret_backend_connection":  databaseSecretBackendConnectionResource(),
 			"vault_database_secret_backend_role":        databaseSecretBackendRoleResource(),
 			"vault_generic_secret":                      genericSecretResource(),
+			"vault_kubernetes_auth_backend_config":      kubernetesAuthBackendConfigResource(),
+			"vault_kubernetes_auth_backend_role":        kubernetesAuthBackendRoleResource(),
 			"vault_okta_auth_backend":                   oktaAuthBackendResource(),
 			"vault_okta_auth_backend_user":              oktaAuthBackendUserResource(),
 			"vault_okta_auth_backend_group":             oktaAuthBackendGroupResource(),
