@@ -369,7 +369,7 @@ func setDatabaseConnectionData(d *schema.ResourceData, prefix string, data map[s
 }
 
 func databaseSecretBackendConnectionCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	backend := d.Get("backend").(string)
 	name := d.Get("name").(string)
@@ -406,7 +406,7 @@ func databaseSecretBackendConnectionCreate(d *schema.ResourceData, meta interfac
 }
 
 func databaseSecretBackendConnectionRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 
@@ -525,7 +525,7 @@ func databaseSecretBackendConnectionRead(d *schema.ResourceData, meta interface{
 }
 
 func databaseSecretBackendConnectionUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	backend := d.Get("backend").(string)
 	name := d.Get("name").(string)
@@ -561,7 +561,7 @@ func databaseSecretBackendConnectionUpdate(d *schema.ResourceData, meta interfac
 }
 
 func databaseSecretBackendConnectionDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 	path := d.Id()
 
 	log.Printf("[DEBUG] Removing database connection config %q", path)
@@ -575,7 +575,7 @@ func databaseSecretBackendConnectionDelete(d *schema.ResourceData, meta interfac
 }
 
 func databaseSecretBackendConnectionExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 

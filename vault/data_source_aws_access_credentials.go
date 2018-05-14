@@ -11,11 +11,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/iam"
 	"github.com/aws/aws-sdk-go/service/sts"
-	cleanhttp "github.com/hashicorp/go-cleanhttp"
+	"github.com/hashicorp/go-cleanhttp"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/helper/schema"
-
-	"github.com/hashicorp/vault/api"
 )
 
 func awsAccessCredentialsDataSource() *schema.Resource {
@@ -92,7 +90,7 @@ func awsAccessCredentialsDataSource() *schema.Resource {
 }
 
 func awsAccessCredentialsDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	backend := d.Get("backend").(string)
 	credType := d.Get("type").(string)

@@ -70,3 +70,19 @@ func getTestAWSCreds(t *testing.T) (string, string) {
 	}
 	return accessKey, secretKey
 }
+
+func getTestPublicAndPrivateKeysAndPassfilePaths(t *testing.T) (string, string, string) {
+	publicKeyPath := os.Getenv("VAULT_PUBLIC_KEY_PATH")
+	privateKeyPath := os.Getenv("VAULT_PRIVATE_KEY_PATH")
+	encryptedPassfilePath := os.Getenv("VAULT_ENCRYPTED_PASSFILE_PATH")
+	if publicKeyPath == "" {
+		t.Skip("VAULT_PUBLIC_KEY_PATH not set")
+	}
+	if privateKeyPath == "" {
+		t.Skip("VAULT_PRIVATE_KEY_PATH not set")
+	}
+	if encryptedPassfilePath == "" {
+		t.Skip("VAULT_ENCRYPTED_PASSFILE_PATH not set")
+	}
+	return publicKeyPath, privateKeyPath, encryptedPassfilePath
+}

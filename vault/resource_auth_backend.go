@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hashicorp/vault/api"
 )
 
 func authBackendResource() *schema.Resource {
@@ -59,7 +58,7 @@ func authBackendResource() *schema.Resource {
 }
 
 func authBackendWrite(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	name := d.Get("type").(string)
 	desc := d.Get("description").(string)
@@ -83,7 +82,7 @@ func authBackendWrite(d *schema.ResourceData, meta interface{}) error {
 }
 
 func authBackendDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 
@@ -99,7 +98,7 @@ func authBackendDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func authBackendRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	targetPath := d.Id() + "/"
 

@@ -6,8 +6,6 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform/helper/schema"
-
-	"github.com/hashicorp/vault/api"
 )
 
 func awsAuthBackendRoleTagResource() *schema.Resource {
@@ -76,7 +74,7 @@ func awsAuthBackendRoleTagResource() *schema.Resource {
 }
 
 func awsAuthBackendRoleTagResourceCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	backend := d.Get("backend").(string)
 	role := d.Get("role").(string)

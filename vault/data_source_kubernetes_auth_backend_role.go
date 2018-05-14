@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hashicorp/vault/api"
 	"log"
 )
 
@@ -79,7 +78,7 @@ func kubernetesAuthBackendRoleDataSource() *schema.Resource {
 }
 
 func kubernetesAuthBackendRoleDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	backend := d.Get("backend").(string)
 	role := d.Get("role_name").(string)

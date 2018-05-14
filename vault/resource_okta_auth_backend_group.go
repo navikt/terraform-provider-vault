@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hashicorp/vault/api"
 )
 
 func oktaAuthBackendGroupResource() *schema.Resource {
@@ -63,7 +62,7 @@ func oktaAuthBackendGroupResource() *schema.Resource {
 }
 
 func oktaAuthBackendGroupWrite(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Get("path").(string)
 	groupName := d.Get("group_name").(string)
@@ -91,7 +90,7 @@ func oktaAuthBackendGroupWrite(d *schema.ResourceData, meta interface{}) error {
 }
 
 func oktaAuthBackendGroupRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Get("path").(string)
 	name := d.Get("group_name").(string)
@@ -122,7 +121,7 @@ func oktaAuthBackendGroupRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func oktaAuthBackendGroupDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Get("path").(string)
 	group := d.Get("group_name").(string)

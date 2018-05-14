@@ -5,7 +5,6 @@ import (
 
 	"fmt"
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hashicorp/vault/api"
 	"log"
 )
 
@@ -48,7 +47,7 @@ func kubernetesAuthBackendConfigDataSource() *schema.Resource {
 }
 
 func kubernetesAuthBackendConfigDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := kubernetesAuthBackendConfigPath(d.Get("backend").(string))
 

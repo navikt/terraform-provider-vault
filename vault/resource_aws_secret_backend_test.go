@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform/helper/acctest"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/hashicorp/vault/api"
 )
 
 func TestAccAWSSecretBackend_basic(t *testing.T) {
@@ -79,7 +78,7 @@ func TestAccAWSSecretBackend_import(t *testing.T) {
 }
 
 func testAccAWSSecretBackendCheckDestroy(s *terraform.State) error {
-	client := testProvider.Meta().(*api.Client)
+	client := testProvider.Meta().(*EncryptedClient)
 
 	mounts, err := client.Sys().ListMounts()
 	if err != nil {

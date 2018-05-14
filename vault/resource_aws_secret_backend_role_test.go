@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform/helper/acctest"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/hashicorp/vault/api"
 )
 
 const testAccAWSSecretBackendRolePolicyInline_basic = `{"Version": "2012-10-17","Statement": [{"Effect": "Allow","Action": "iam:*","Resource": "*"}]}`
@@ -120,7 +119,7 @@ func TestAccAWSSecretBackendRole_nested(t *testing.T) {
 }
 
 func testAccAWSSecretBackendRoleCheckDestroy(s *terraform.State) error {
-	client := testProvider.Meta().(*api.Client)
+	client := testProvider.Meta().(*EncryptedClient)
 
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "vault_aws_secret_backend_role" {

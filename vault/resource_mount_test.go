@@ -164,7 +164,7 @@ func testResourceMount_updateCheck(s *terraform.State) error {
 }
 
 func findMount(path string) (*api.MountOutput, error) {
-	client := testProvider.Meta().(*api.Client)
+	client := testProvider.Meta().(*EncryptedClient)
 
 	path = path + "/"
 

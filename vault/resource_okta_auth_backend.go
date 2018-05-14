@@ -8,7 +8,6 @@ import (
 
 	"github.com/hashicorp/terraform/helper/hashcode"
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hashicorp/vault/api"
 )
 
 var oktaAuthType = "okta"
@@ -188,7 +187,7 @@ func oktaAuthBackendResource() *schema.Resource {
 }
 
 func oktaAuthBackendWrite(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	authType := oktaAuthType
 	desc := d.Get("description").(string)
@@ -208,7 +207,7 @@ func oktaAuthBackendWrite(d *schema.ResourceData, meta interface{}) error {
 }
 
 func oktaAuthBackendDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 
@@ -224,7 +223,7 @@ func oktaAuthBackendDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func oktaAuthBackendRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 	log.Printf("[DEBUG] Reading auth %s from Vault", path)
@@ -264,7 +263,7 @@ func oktaAuthBackendRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func oktaAuthBackendUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 	log.Printf("[DEBUG] Updating auth %s in Vault", path)
@@ -309,7 +308,7 @@ func oktaAuthBackendUpdate(d *schema.ResourceData, meta interface{}) error {
 	return oktaAuthBackendRead(d, meta)
 }
 
-func oktaReadAllGroups(client *api.Client, path string) (*schema.Set, error) {
+func oktaReadAllGroups(client *EncryptedClient, path string) (*schema.Set, error) {
 	groupNames, err := listOktaGroups(client, path)
 	if err != nil {
 		return nil, fmt.Errorf("unable to list groups from %s in Vault: %s", path, err)
@@ -337,7 +336,7 @@ func oktaReadAllGroups(client *api.Client, path string) (*schema.Set, error) {
 	return groups, nil
 }
 
-func oktaReadAllUsers(client *api.Client, path string) (*schema.Set, error) {
+func oktaReadAllUsers(client *EncryptedClient, path string) (*schema.Set, error) {
 	userNames, err := listOktaUsers(client, path)
 	if err != nil {
 		return nil, fmt.Errorf("unable to list groups from %s in Vault: %s", path, err)
@@ -371,7 +370,7 @@ func oktaReadAllUsers(client *api.Client, path string) (*schema.Set, error) {
 	return users, nil
 }
 
-func oktaAuthUpdateGroups(d *schema.ResourceData, client *api.Client, path string, oldValue, newValue interface{}) error {
+func oktaAuthUpdateGroups(d *schema.ResourceData, client *EncryptedClient, path string, oldValue, newValue interface{}) error {
 
 	groupsToDelete := oldValue.(*schema.Set).Difference(newValue.(*schema.Set))
 	newGroups := newValue.(*schema.Set).Difference(oldValue.(*schema.Set))
@@ -407,7 +406,7 @@ func oktaAuthUpdateGroups(d *schema.ResourceData, client *api.Client, path strin
 	return nil
 }
 
-func oktaAuthUpdateUsers(d *schema.ResourceData, client *api.Client, path string, oldValue, newValue interface{}) error {
+func oktaAuthUpdateUsers(d *schema.ResourceData, client *EncryptedClient, path string, oldValue, newValue interface{}) error {
 	usersToDelete := oldValue.(*schema.Set).Difference(newValue.(*schema.Set))
 	newUsers := newValue.(*schema.Set).Difference(oldValue.(*schema.Set))
 

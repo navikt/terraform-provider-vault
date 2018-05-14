@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform/helper/acctest"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/hashicorp/vault/api"
 )
 
 func TestAccDatabaseSecretBackendRole_import(t *testing.T) {
@@ -93,7 +92,7 @@ func TestAccDatabaseSecretBackendRole_basic(t *testing.T) {
 }
 
 func testAccDatabaseSecretBackendRoleCheckDestroy(s *terraform.State) error {
-	client := testProvider.Meta().(*api.Client)
+	client := testProvider.Meta().(*EncryptedClient)
 
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "vault_database_secret_backend_role" {

@@ -6,7 +6,6 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hashicorp/vault/api"
 )
 
 func genericSecretResource() *schema.Resource {
@@ -93,7 +92,7 @@ func NormalizeDataJSON(configI interface{}) string {
 }
 
 func genericSecretResourceWrite(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Get("path").(string)
 
@@ -115,7 +114,7 @@ func genericSecretResourceWrite(d *schema.ResourceData, meta interface{}) error 
 }
 
 func genericSecretResourceDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 
@@ -139,7 +138,7 @@ func genericSecretResourceRead(d *schema.ResourceData, meta interface{}) error {
 	path := d.Id()
 
 	if shouldRead {
-		client := meta.(*api.Client)
+		client := meta.(*EncryptedClient)
 
 		log.Printf("[DEBUG] Reading %s from Vault", path)
 		secret, err := client.Logical().Read(path)

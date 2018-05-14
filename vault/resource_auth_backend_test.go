@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform/helper/acctest"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/hashicorp/vault/api"
 )
 
 func TestResourceAuth(t *testing.T) {
@@ -29,7 +28,7 @@ func TestResourceAuth(t *testing.T) {
 }
 
 func testAccCheckAuthBackendDestroy(s *terraform.State) error {
-	client := testProvider.Meta().(*api.Client)
+	client := testProvider.Meta().(*EncryptedClient)
 
 	auths, err := client.Sys().ListAuth()
 	if err != nil {
@@ -82,7 +81,7 @@ func testResourceAuth_initialCheck(expectedPath string) resource.TestCheckFunc {
 			return fmt.Errorf("unexpected auth path %q, expected %q", path, expectedPath)
 		}
 
-		client := testProvider.Meta().(*api.Client)
+		client := testProvider.Meta().(*EncryptedClient)
 		auths, err := client.Sys().ListAuth()
 
 		if err != nil {
@@ -134,7 +133,7 @@ func testResourceAuth_updateCheck(s *terraform.State) error {
 		return fmt.Errorf("unexpected auth name")
 	}
 
-	client := testProvider.Meta().(*api.Client)
+	client := testProvider.Meta().(*EncryptedClient)
 	auths, err := client.Sys().ListAuth()
 
 	if err != nil {

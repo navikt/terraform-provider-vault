@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hashicorp/vault/api"
 )
 
 func awsSecretBackendRoleResource() *schema.Resource {
@@ -51,7 +50,7 @@ func awsSecretBackendRoleResource() *schema.Resource {
 }
 
 func awsSecretBackendRoleWrite(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	backend := d.Get("backend").(string)
 	name := d.Get("name").(string)
@@ -81,7 +80,7 @@ func awsSecretBackendRoleWrite(d *schema.ResourceData, meta interface{}) error {
 }
 
 func awsSecretBackendRoleRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 	pathPieces := strings.Split(path, "/")
@@ -108,7 +107,7 @@ func awsSecretBackendRoleRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func awsSecretBackendRoleDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 	log.Printf("[DEBUG] Deleting role %q", path)
@@ -121,7 +120,7 @@ func awsSecretBackendRoleDelete(d *schema.ResourceData, meta interface{}) error 
 }
 
 func awsSecretBackendRoleExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 	log.Printf("[DEBUG] Checking if %q exists", path)

@@ -5,7 +5,6 @@ import (
 	"github.com/hashicorp/terraform/helper/acctest"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/hashicorp/vault/api"
 	"strconv"
 	"testing"
 )
@@ -61,7 +60,7 @@ func testOktaAuthBackendGroup_InitialCheck(s *terraform.State) error {
 
 func testOktaAuthBackendGroup_Destroyed(path, groupName string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		client := testProvider.Meta().(*api.Client)
+		client := testProvider.Meta().(*EncryptedClient)
 
 		group, err := client.Logical().Read(fmt.Sprintf("/auth/%s/groups/%s", path, groupName))
 		if err != nil {

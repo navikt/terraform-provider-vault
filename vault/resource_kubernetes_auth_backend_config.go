@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hashicorp/vault/api"
 )
 
 var (
@@ -69,7 +68,7 @@ func kubernetesAuthBackendConfigPath(backend string) string {
 }
 
 func kubernetesAuthBackendConfigCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	backend := d.Get("backend").(string)
 
@@ -122,7 +121,7 @@ func kubernetesAuthBackendConfigBackendFromPath(path string) (string, error) {
 }
 
 func kubernetesAuthBackendConfigRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 	path := d.Id()
 
 	backend, err := kubernetesAuthBackendConfigBackendFromPath(path)
@@ -159,7 +158,7 @@ func kubernetesAuthBackendConfigRead(d *schema.ResourceData, meta interface{}) e
 }
 
 func kubernetesAuthBackendConfigUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 	path := d.Id()
 
 	log.Printf("[DEBUG] Updating Kubernetes auth backend config %q", path)
@@ -203,7 +202,7 @@ func kubernetesAuthBackendConfigDelete(d *schema.ResourceData, meta interface{})
 }
 
 func kubernetesAuthBackendConfigExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(*api.Client)
+	client := meta.(*EncryptedClient)
 
 	path := d.Id()
 	log.Printf("[DEBUG] Checking if Kubernetes auth backend config %q exists", path)

@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform/helper/acctest"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/hashicorp/vault/api"
 )
 
 func TestResourceGenericSecret(t *testing.T) {
@@ -40,7 +39,7 @@ func TestResourceGenericSecret_deleted(t *testing.T) {
 			},
 			resource.TestStep{
 				PreConfig: func() {
-					client := testProvider.Meta().(*api.Client)
+					client := testProvider.Meta().(*EncryptedClient)
 					_, err := client.Logical().Delete(path)
 					if err != nil {
 						t.Fatalf("unable to manually delete the secret via the SDK: %s", err)
@@ -86,7 +85,7 @@ func testResourceGenericSecret_initialCheck(expectedPath string) resource.TestCh
 			return fmt.Errorf("unexpected secret path")
 		}
 
-		client := testProvider.Meta().(*api.Client)
+		client := testProvider.Meta().(*EncryptedClient)
 		secret, err := client.Logical().Read(path)
 		if err != nil {
 			return fmt.Errorf("error reading back secret: %s", err)
@@ -104,7 +103,6 @@ var testResourceGenericSecret_updateConfig = `
 
 resource "vault_generic_secret" "test" {
     path = "secret/foo"
-    disable_read = false
     data_json = <<EOT
 {
     "zip": "zoop"
@@ -120,7 +118,7 @@ func testResourceGenericSecret_updateCheck(s *terraform.State) error {
 
 	path := instanceState.ID
 
-	client := testProvider.Meta().(*api.Client)
+	client := testProvider.Meta().(*EncryptedClient)
 	secret, err := client.Logical().Read(path)
 	if err != nil {
 		return fmt.Errorf("error reading back secret: %s", err)
